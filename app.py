@@ -1,5 +1,6 @@
 import datetime
 from datetime import datetime
+from urllib.parse import urlparse
 from flask import Flask, flash, redirect, render_template,request, session, url_for
 from forms import ContattoForm, LoginForm,PrenotazioneForm, RegisterForm
 import mysql.connector
@@ -11,20 +12,25 @@ import os
 app = Flask(__name__)
 app.secret_key = os.urandom(24)  # Chiave segreta per sessioni e CSRF (meglio caricarla da variabile ambiente in produzione)
 def get_db_connection():
-    # Controlla se siamo in produzione su Railway (devi settare questa variabile su Railway)
-    if os.getenv("RAILWAY_ENVIRONMENT") == "production":
-        host = os.getenv("MYSQLHOST", "mysql.railway.internal")
-        port = int(os.getenv("MYSQLPORT", 3306))
-    else:
-        # Connessione da locale, usa il public endpoint
-        host = "centerbeam.proxy.rlwy.net"
-        port = 12392  # la porta del public endpoint
+    # Leggi la URL pubblica dal env
+    mysql_url = os.getenv("MYSQL_PUBLIC_URL")
+    if not mysql_url:
+        raise ValueError("MYSQL_PUBLIC_URL non è settata")
+
+    # Parsing della URL
+    url = urlparse(mysql_url)
+
+    host = url.hostname
+    port = url.port
+    user = url.username
+    password = url.password
+    database = url.path.lstrip('/')  # rimuove il primo slash
 
     return mysql.connector.connect(
         host=host,
-        user=os.getenv("MYSQLUSER", "root"),
-        password=os.getenv("MYSQLPASSWORD", "AsLLHeojpOxoIDSiScBqQWeMxbGtYlzu"),
-        database=os.getenv("MYSQLDATABASE", "railway"),
+        user=user,
+        password=password,
+        database=database,
         port=port
     )
 
