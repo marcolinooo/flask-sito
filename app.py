@@ -10,14 +10,22 @@ import os
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)  # Chiave segreta per sessioni e CSRF (meglio caricarla da variabile ambiente in produzione)
-
 def get_db_connection():
+    # Controlla se siamo in produzione su Railway (devi settare questa variabile su Railway)
+    if os.getenv("RAILWAY_ENVIRONMENT") == "production":
+        host = os.getenv("MYSQLHOST", "mysql.railway.internal")
+        port = int(os.getenv("MYSQLPORT", 3306))
+    else:
+        # Connessione da locale, usa il public endpoint
+        host = "centerbeam.proxy.rlwy.net"
+        port = 12392  # la porta del public endpoint
+
     return mysql.connector.connect(
-        host=os.getenv("MYSQLHOST", "mysql.railway.internal"),
+        host=host,
         user=os.getenv("MYSQLUSER", "root"),
         password=os.getenv("MYSQLPASSWORD", "AsLLHeojpOxoIDSiScBqQWeMxbGtYlzu"),
         database=os.getenv("MYSQLDATABASE", "railway"),
-        port=int(os.getenv("MYSQLPORT", 3306))
+        port=port
     )
 
 @app.route("/")
