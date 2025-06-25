@@ -7,6 +7,8 @@ from forms import ContattoForm, LoginForm,PrenotazioneForm, RegisterForm
 import mysql.connector
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
+from werkzeug.middleware.proxy_fix import ProxyFix
+
 
 import os
 
@@ -266,11 +268,12 @@ def inject_now():
  # Sicurezza HTTPS + header di sicurezza
 Talisman(app, content_security_policy=None)
 
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
+
 @app.before_request
 def before_request():
-    if not request.is_secure and not app.debug:
-        url = request.url.replace("http://", "https://", 1)
-        return redirect(url, code=301)
+    if not request.is_secure:
+        return redirect(request.url.replace("http://", "https://", 1))
     
 if __name__ == "__main__":
     app.run(debug=True)
