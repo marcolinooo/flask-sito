@@ -2,6 +2,7 @@ import datetime
 from datetime import datetime
 from urllib.parse import urlparse
 from flask import Flask, flash, redirect, render_template,request, session, url_for
+from flask_talisman import Talisman
 from forms import ContattoForm, LoginForm,PrenotazioneForm, RegisterForm
 import mysql.connector
 from werkzeug.security import generate_password_hash
@@ -256,6 +257,20 @@ def aggiungi_prenotazione():
 @app.context_processor
 def inject_now():
     return {'now': datetime.now}
+
+
+#@app.before_request
+#def block_all():
+ #   return "Sito offline temporaneamente", 503
+ 
+ # Sicurezza HTTPS + header di sicurezza
+Talisman(app, content_security_policy=None)
+
+@app.before_request
+def before_request():
+    if not request.is_secure and not app.debug:
+        url = request.url.replace("http://", "https://", 1)
+        return redirect(url, code=301)
     
 if __name__ == "__main__":
     app.run(debug=True)
