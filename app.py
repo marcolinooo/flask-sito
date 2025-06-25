@@ -13,10 +13,11 @@ app.secret_key = os.urandom(24)  # Chiave segreta per sessioni e CSRF (meglio ca
 
 def get_db_connection():
     return mysql.connector.connect(
-        host="mysql.railway.internal",
-        user="root",
-        password="AsLLHeojpOxoIDSiScBqQWeMxbGtYlzu",
-        database="railway"
+        host=os.getenv("MYSQLHOST"),
+        user=os.getenv("MYSQLUSER"),
+        password=os.getenv("MYSQLPASSWORD"),
+        database=os.getenv("MYSQLDATABASE"),
+        port=int(os.getenv("MYSQLPORT", 3306))  # default a 3306 se non è impostata
     )
 
 @app.route("/")
