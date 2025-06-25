@@ -1,0 +1,25 @@
+name: Backup MySQL DB
+
+on:
+  schedule:
+    - cron: '0 2 * * *'  # Ogni giorno alle 2:00 UTC
+  workflow_dispatch:     # Permette di avviare il backup manualmente
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install MySQL Client
+      run: sudo apt-get install -y mysql-client
+
+    - name: Dump MySQL DB
+      run: |
+        mkdir -p backup
+        mysqldump -h mysql.railway.internal -P 3306 -u root -p'AsLLHeojpOxoIDSiScBqQWeMxbGtYlzu' railway > backup/backup-$(date +%F).sql
+
+    - name: Upload backup file
+      uses: actions/upload-artifact@v4
+      with:
+        name: mysql-backup
+        path: backup/backup-*.sql
