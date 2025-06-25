@@ -13,20 +13,24 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24)  # Chiave segreta per sessioni e CSRF (meglio caricarla da variabile ambiente in produzione)
 def get_db_connection():
     env = os.getenv("RAILWAY_ENVIRONMENT", "development")
-    
     if env == "production":
         host = os.getenv("MYSQLHOST", "centerbeam.proxy.rlwy.net")
         port = int(os.getenv("MYSQLPORT", 12392))
     else:
-        # ambiente locale o altro
         host = os.getenv("MYSQL_PUBLIC_URL_HOST", "centerbeam.proxy.rlwy.net")
         port = int(os.getenv("MYSQL_PUBLIC_URL_PORT", 12392))
 
+    user = os.getenv("MYSQLUSER")
+    password = os.getenv("MYSQLPASSWORD")
+    database = os.getenv("MYSQLDATABASE")
+
+    print(f"Connecting to DB with user={user}, password={'SET' if password else 'NOT SET'}, host={host}, port={port}, database={database}")
+
     return mysql.connector.connect(
         host=host,
-        user=os.getenv("MYSQLUSER"),
-        password=os.getenv("MYSQLPASSWORD"),
-        database=os.getenv("MYSQLDATABASE"),
+        user=user,
+        password=password,
+        database=database,
         port=port
     )
 @app.route("/")
