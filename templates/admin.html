@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestione Prenotazioni - Admin</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .editable input { width: 100%; border: none; background: transparent; }
+    .editable input:focus { border: 1px solid #ced4da; background: #fff; }
+    footer {
+      background-color: #f8f9fa;
+      padding: 1rem 0;
+      margin-top: 3rem;
+      text-align: center;
+      color: #6c757d;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Admin Prenotazioni</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenuto principale -->
+  <div class="container mt-5">
+    <h1 class="mb-4">Pannello Amministratore - Prenotazioni</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <!-- Tabella Prenotazioni -->
+    <table class="table table-bordered table-hover align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>Nome</th>
+          <th>Email</th>
+          <th>Data</th>
+          <th>Ora</th>
+          <th>Persone</th>
+          <th>Azioni</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for prenotazione in prenotazioni %}
+        <tr>
+          <form method="POST" action="{{ url_for('modifica_prenotazione', id=prenotazione.id) }}">
+            <td class="editable"><input type="text" name="nome" value="{{ prenotazione.nome }}"></td>
+            <td class="editable"><input type="email" name="email" value="{{ prenotazione.email }}"></td>
+            <td class="editable"><input type="date" name="data" value="{{ prenotazione.data }}"></td>
+            <td class="editable"><input type="time" name="ora" value="{{ prenotazione.ora }}"></td>
+            <td class="editable"><input type="number" name="persone" value="{{ prenotazione.persone }}"></td>
+            <td>
+              <button type="submit" class="btn btn-sm btn-primary">Salva</button>
+              <a href="{{ url_for('elimina_prenotazione', id=prenotazione.id) }}" class="btn btn-sm btn-danger"
+                 onclick="return confirm('Sei sicuro di voler cancellare questa prenotazione?')">Elimina</a>
+            </td>
+          </form>
+        </tr>
+        {% endfor %}
+        <!-- Riga per aggiungere -->
+        <tr>
+          <form method="POST" action="{{ url_for('aggiungi_prenotazione') }}">
+            <td><input type="text" name="nome" class="form-control" required></td>
+            <td><input type="email" name="email" class="form-control" required></td>
+            <td><input type="date" name="data" class="form-control" required></td>
+            <td><input type="time" name="ora" class="form-control" required></td>
+            <td><input type="number" name="persone" class="form-control" required></td>
+            <td><button type="submit" class="btn btn-success">Aggiungi</button></td>
+          </form>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    &copy; {{ now().year }} Sistema Prenotazioni Admin • Tutti i diritti riservati
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

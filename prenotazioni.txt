@@ -1,0 +1,72 @@
+Nome: gg
+Email: gg@gmail.com
+Telefono: 1234567890
+Data: 2025-06-16
+Ora: 12:46
+Persone: 5
+Messaggio: ggg
+---
+Nome: marco
+Email: duce@duce.it
+Telefono: 34566732
+Data: 2025-06-08
+Ora: 14:51
+Persone: 6
+Messaggio: ciaooo
+---
+Nome: gino
+Email: broda@mm.it
+Telefono: 5463782910
+Data: 2025-06-21
+Ora: 13:51
+Persone: 6
+Messaggio: bellaaa
+---
+Nome: gg
+Email: gg@gh.it
+Telefono: 564738291
+Data: 2025-06-15
+Ora: 15:55
+Persone: 7
+Messaggio: ytgrfdeswaq
+---
+Nome: harto
+Email: harto@gmail.com
+Telefono: 5432
+Data: 2025-06-12
+Orario: 15:08:00
+Persone: 5
+Note: 
+-----
+Nome: hino
+Email: hino@gmail.com
+Telefono: 349882784
+Data: 2025-06-18
+Orario: 13:08:00
+Persone: 5
+Note: 
+-----
+Nome: rfd
+Email: rdcx@gmail.it
+Telefono: 54321532
+Data: 2025-06-12
+Orario: 16:11:00
+Persone: 6
+Note: 
+-----
+Nome: Gg
+Email: Hehssb@gmail.com
+Telefono: 54467776
+Data: 2025-06-19
+Orario: 12:37:00
+Persone: 6
+Note: 
+-----
+Nome: frff
+Email: vvv@gmail.com
+Telefono: 54321
+Data: 2025-06-11
+Orario: 16:01:00
+Persone: 4
+Note: 
+-----
