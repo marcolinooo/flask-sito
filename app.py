@@ -1,5 +1,7 @@
 import datetime
 from datetime import datetime
+from email.mime.text import MIMEText
+import smtplib
 from urllib.parse import urlparse
 from flask import Flask, flash, redirect, render_template,request, session, url_for
 from flask_talisman import Talisman
@@ -274,6 +276,53 @@ app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 def before_request():
     if not request.is_secure:
         return redirect(request.url.replace("http://", "https://", 1))
+    
+    
+@app.route('/invia_email', methods=['POST'])
+def invia_email():
+    email_text = request.form.get('email_text')
+    action = request.form.get('action')
+    user_ids = request.form.getlist('user_ids')  # lista di id come stringhe
+
+    if action == 'all':
+        utenti = utenti.query.all()
+    else:
+        utenti = utenti.query.filter(utenti.id.in_(user_ids)).all()
+
+    destinatari = [u.email for u in utenti]
+
+    # Invia email - esempio semplice con SMTP (devi configurare server SMTP reale)
+    try:
+        smtp_server = 'smtp.tuoserver.com'
+        smtp_port = 587
+        smtp_user = 'tuo@email.it'
+        smtp_password = 'password'
+
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.starttls()
+        server.login(smtp_user, smtp_password)
+
+        for email in destinatari:
+            msg = MIMEText(email_text)
+            msg['Subject'] = 'Messaggio dal sistema prenotazioni'
+            msg['From'] = smtp_user
+            msg['To'] = email
+
+            server.sendmail(smtp_user, email, msg.as_string())
+
+        server.quit()
+        flash(f'Email inviate a {len(destinatari)} utenti!', 'success')
+    except Exception as e:
+        flash(f'Errore invio email: {str(e)}', 'danger')
+
+    return redirect(url_for('admin_prenotazioni'))  # Cambia con la tua pagina admin
+
+
+@app.route('/admin/prenotazioni')
+def admin_prenotazioni():
+    prenotazioni = prenotazione.query.all()
+    utenti = utenti.query.all()
+    return render_template('admin.html', prenotazioni=prenotazioni, utenti=utenti)
     
 if __name__ == "__main__":
     app.run(debug=True)

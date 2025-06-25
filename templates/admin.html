@@ -98,6 +98,31 @@
     </table>
   </div>
 
+  <!-- Form invio email -->
+  <div class="container mt-5">
+    <h2>Invia Email agli Utenti</h2>
+
+    <form method="POST" action="{{ url_for('invia_email') }}">
+      <div class="mb-3">
+        <label for="emailText" class="form-label">Testo Email</label>
+        <textarea class="form-control" id="emailText" name="email_text" rows="4" required></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="userList" class="form-label">Seleziona Utenti</label>
+        <select multiple class="form-select" id="userList" name="user_ids">
+          {% for utente in utenti %}
+            <option value="{{ utente.id }}">{{ utente.nome }} - {{ utente.email }}</option>
+          {% endfor %}
+        </select>
+        <small class="form-text text-muted">Tieni premuto Ctrl (Cmd su Mac) per selezionare più utenti.</small>
+      </div>
+
+      <button type="submit" name="action" value="selected" class="btn btn-primary">Invia a Selezionati</button>
+      <button type="submit" name="action" value="all" class="btn btn-success">Invia a Tutti</button>
+    </form>
+  </div>
+
   <!-- Footer -->
   <footer>
     &copy; {{ now().year }} Sistema Prenotazioni Admin • Tutti i diritti riservati
