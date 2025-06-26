@@ -51,6 +51,7 @@ def menu():
 @app.route("/chisiamo")
 def chisiamo():
     return render_template("chisiamo.html")
+
 @app.route("/recensioni")
 def recensioni():
     return render_template("recensioni.html")
