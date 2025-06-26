@@ -34,6 +34,17 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Accedi')
     
     
+class RecensioneForm(FlaskForm):
+    nome = StringField('Nome', validators=[DataRequired()])
+    email = StringField('Email', validators=[Email()])
+    telefono = StringField('Telefono')
+    data = DateField('Data', validators=[DataRequired()])
+    orario = TimeField('Orario', validators=[DataRequired()])
+    persone = StringField('Numero di persone', validators=[DataRequired()])
+    note = TextAreaField('Recensione', validators=[DataRequired()])
+    submit = SubmitField('Invia Recensione')
+    
+    
 #class Prenotazione(db.Model):
  #   id = db.Column(db.Integer, primary_key=True)
  #   nome = db.Column(db.String(50))

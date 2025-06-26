@@ -5,7 +5,7 @@ import smtplib
 from urllib.parse import urlparse
 from flask import Flask, flash, redirect, render_template,request, session, url_for
 from flask_talisman import Talisman
-from forms import ContattoForm, LoginForm,PrenotazioneForm, RegisterForm
+from forms import ContattoForm, LoginForm,PrenotazioneForm, RecensioneForm, RegisterForm
 import mysql.connector
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
@@ -52,10 +52,24 @@ def menu():
 def chisiamo():
     return render_template("chisiamo.html")
 
-@app.route("/recensioni")
+@app.route("/recensioni", methods=["GET", "POST"])
 def recensioni():
-    return render_template("recensioni.html")
+    form = RecensioneForm()
 
+    if form.validate_on_submit():
+        # Qui puoi salvare i dati nel database o fare altro
+        nome = form.nome.data
+        email = form.email.data
+        telefono = form.telefono.data
+        data = form.data.data
+        orario = form.orario.data
+        persone = form.persone.data
+        note = form.note.data
+
+        # esempio di redirect dopo invio:
+        return redirect(url_for("recensioni"))  # o una pagina di ringraziamento
+
+    return render_template("recensioni.html", form=form)
 @app.route('/contatti', methods=['GET', 'POST'])
 def contatti():
     form = ContattoForm()
