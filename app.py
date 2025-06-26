@@ -51,6 +51,9 @@ def menu():
 @app.route("/chisiamo")
 def chisiamo():
     return render_template("chisiamo.html")
+@app.route("/recensioni")
+def recensioni():
+    return render_template("recensioni.html")
 
 @app.route('/contatti', methods=['GET', 'POST'])
 def contatti():
@@ -329,7 +332,7 @@ def invia_email():
 
 @app.route('/admin/prenotazioni')
 def admin_prenotazioni():
-    prenotazioni = utenti.query.all()
+    prenotazioni = prenotazioni.query.all()
     utenti = utenti.query.all()
     return render_template('admin.html', prenotazioni=prenotazioni, utenti=utenti)
     

@@ -79,8 +79,7 @@
           <li class="nav-item"><a class="nav-link" href="/prenotazione">Prenotazione</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url_for('chisiamo') }}">chi siamo</a></li>
           <li class="nav-item"><a class="nav-link" href="/contatti">Contatti</a></li>
-          <li class="nav-item"><a class="nav-link" href="/recensioni">recensioni</a></li>
-           <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
           <li class="nav-item"><a class="nav-link active" href="{{ url_for('register') }}">Registrazione</a></li>
         </ul>
       </div>
@@ -88,36 +87,76 @@
   </nav>
 
   <header class="page-header">
-    <h1>Chi Siamo</h1>
-    <p>Scopri la passione e la storia dietro all' HOSTERIA DI PADRE IN FIGLIO, il luogo dove gusto e tradizione si incontrano.</p>
+    <h1>recensioni</h1>
+    <p>scrivi una recensione sul nostro servizio</p>
   </header>
+     <!-- Form Prenotazione -->
+  <div class="container form-container">
+    <h2 class="form-title">scrivi una recensione</h2>
+    <form method="POST" action="{{ url_for('prenotazione') }}">
+  {{ form.hidden_tag() }}
 
-  <section class="content-section container">
-    <p>
-      HOSTERIA DI PADRE IN FIGLIO nasce dalla passione per la cucina autentica italiana e dall’amore per gli ingredienti di qualità.  
-      Dal 1998 accogliamo i nostri ospiti in un’atmosfera calda e familiare, offrendo piatti preparati con cura e ricette tramandate di generazione in generazione.
-    </p>
+  <div class="mb-3">
+    {{ form.nome.label(class="form-label") }}
+    {{ form.nome(class="form-control") }}
+    {% for error in form.nome.errors %}
+      <div class="text-danger">{{ error }}</div>
+    {% endfor %}
+  </div>
 
-    <p>
-      La nostra missione è farti vivere un’esperienza culinaria indimenticabile, valorizzando i sapori della tradizione locale e la creatività moderna.  
-      Ogni piatto è preparato con ingredienti freschi, molti dei quali provenienti da produttori locali selezionati con attenzione.
-    </p>
+  <div class="mb-3">
+    {{ form.email.label(class="form-label") }}
+    {{ form.email(class="form-control") }}
+    {% for error in form.email.errors %}
+      <div class="text-danger">{{ error }}</div>
+    {% endfor %}
+  </div>
 
-    <div class="row image-row">
-      <div class="col-md-6 mb-4">
-        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80" alt="Cucina HOSTERIA DI PADRE IN FIGLIO" />
-      </div>
-      <div class="col-md-6 mb-4">
-        <img src="https://images.unsplash.com/photo-1529692236671-f5b7b8e8a8d4?auto=format&fit=crop&w=800&q=80" alt="Atmosfera ristorante" />
-      </div>
-    </div>
+  <div class="mb-3">
+    {{ form.telefono.label(class="form-label") }}
+    {{ form.telefono(class="form-control") }}
+    {% for error in form.telefono.errors %}
+      <div class="text-danger">{{ error }}</div>
+    {% endfor %}
+  </div>
 
-    <p>
-      Il nostro staff è composto da professionisti appassionati, pronti ad accoglierti con il sorriso e a consigliarti i migliori abbinamenti tra piatti e vini.  
-      Siamo fieri di essere un punto di riferimento nel panorama gastronomico locale e ti aspettiamo per farti sentire come a casa.
-    </p>
-  </section>
+  <div class="mb-3">
+    {{ form.data.label(class="form-label") }}
+    {{ form.data(class="form-control") }}
+    {% for error in form.data.errors %}
+      <div class="text-danger">{{ error }}</div>
+    {% endfor %}
+  </div>
 
+  <div class="mb-3">
+    {{ form.orario.label(class="form-label") }}
+    {{ form.orario(class="form-control") }}
+    {% for error in form.orario.errors %}
+      <div class="text-danger">{{ error }}</div>
+    {% endfor %}
+  </div>
+
+  <div class="mb-3">
+    {{ form.persone.label(class="form-label") }}
+    {{ form.persone(class="form-control") }}
+    {% for error in form.persone.errors %}
+      <div class="text-danger">{{ error }}</div>
+    {% endfor %}
+  </div>
+
+  <div class="mb-3">
+    {{ form.note.label(class="form-label") }}
+    {{ form.note(class="form-control") }}
+    {% for error in form.note.errors %}
+      <div class="text-danger">{{ error }}</div>
+    {% endfor %}
+  </div>
+
+  {{ form.submit(class="btn btn-primary w-100") }}
+</form>
+  </div>
+
+  
   <footer>
     &copy; 2025 HOSTERIA DI PADRE IN FIGLIO - Tutti i diritti riservati
   </footer>

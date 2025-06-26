@@ -34,3 +34,18 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Accedi')
     
     
+#class Prenotazione(db.Model):
+ #   id = db.Column(db.Integer, primary_key=True)
+ #   nome = db.Column(db.String(50))
+  #  email = db.Column(db.String(120))
+ #   telefono = db.Column(db.String(20))
+  #  data = db.Column(db.Date)
+  #  orario = db.Column(db.Time)
+  #  persone = db.Column(db.Integer)
+   # note = db.Column(db.String(255))
+
+#class Utente(db.Model):
+ #   id = db.Column(db.Integer, primary_key=True)
+  #  username = db.Column(db.String(50))
+  #  email = db.Column(db.String(120))
+  #  password_hash = db.Column(db.String(255))
