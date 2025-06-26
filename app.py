@@ -284,14 +284,22 @@ def invia_email():
     action = request.form.get('action')
     user_ids = request.form.getlist('user_ids')  # lista di id come stringhe
 
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
     if action == 'all':
-        utenti = utenti.query.all()
+        cursor.execute('SELECT email FROM utenti')
     else:
-        utenti = utenti.query.filter(utenti.id.in_(user_ids)).all()
+        # Costruisce dinamicamente la query con il numero corretto di segnaposto (?)
+        placeholders = ','.join(['?'] * len(user_ids))
+        cursor.execute(f'SELECT email FROM utenti WHERE id IN ({placeholders})', user_ids)
 
-    destinatari = [u.email for u in utenti]
+    rows = cursor.fetchall()
+    destinatari = [row['email'] for row in rows]
 
-    # Invia email - esempio semplice con SMTP (devi configurare server SMTP reale)
+    conn.close()
+
+    # Invio email
     try:
         smtp_server = 'smtp.tuoserver.com'
         smtp_port = 587
@@ -315,7 +323,7 @@ def invia_email():
     except Exception as e:
         flash(f'Errore invio email: {str(e)}', 'danger')
 
-    return redirect(url_for('admin_prenotazioni'))  # Cambia con la tua pagina admin
+    return redirect(url_for('admin_prenotazioni'))
 
 
 @app.route('/admin/prenotazioni')
