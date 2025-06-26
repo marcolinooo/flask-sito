@@ -98,7 +98,7 @@
     </table>
   </div>
 
-  <!-- Form invio email -->
+<!-- Form invio email -->
   <div class="container mt-5">
     <h2>Invia Email agli Utenti</h2>
 
@@ -110,7 +110,8 @@
 
       <div class="mb-3">
         <label for="userList" class="form-label">Seleziona Utenti</label>
-        <select multiple class="form-select" id="userList" name="user_ids">
+        <!-- Nota: name="user_ids[]" per passare lista multipla -->
+        <select multiple class="form-select" id="userList" name="user_ids[]">
           {% for utente in utenti %}
             <option value="{{ utente.id }}">{{ utente.nome }} - {{ utente.email }}</option>
           {% endfor %}
@@ -124,7 +125,7 @@
   </div>
 
   <!-- Footer -->
-  <footer>
+  <footer class="text-center mt-5 mb-3">
     &copy; {{ now().year }} Sistema Prenotazioni Admin • Tutti i diritti riservati
   </footer>
 
