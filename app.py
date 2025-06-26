@@ -329,7 +329,7 @@ def invia_email():
 
 @app.route('/admin/prenotazioni')
 def admin_prenotazioni():
-    prenotazioni = PrenotazioneForm.query.all()
+    prenotazioni = utenti.query.all()
     utenti = utenti.query.all()
     return render_template('admin.html', prenotazioni=prenotazioni, utenti=utenti)
     
