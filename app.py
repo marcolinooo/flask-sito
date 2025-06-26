@@ -290,21 +290,22 @@ def invia_email():
     if action == 'all':
         cursor.execute('SELECT email FROM utenti')
     else:
-        # Costruisce dinamicamente la query con il numero corretto di segnaposto (?)
+        if not user_ids:
+            flash('Nessun utente selezionato.', 'warning')
+            return redirect(url_for('admin_prenotazioni'))
         placeholders = ','.join(['?'] * len(user_ids))
         cursor.execute(f'SELECT email FROM utenti WHERE id IN ({placeholders})', user_ids)
 
     rows = cursor.fetchall()
-    destinatari = [row['email'] for row in rows]
+    destinatari = [row[0] for row in rows]  # row è una tupla, email è al primo indice
 
     conn.close()
 
-    # Invio email
     try:
-        smtp_server = 'smtp.tuoserver.com'
+        smtp_server = 'smtp.gmail.com'
         smtp_port = 587
-        smtp_user = 'tuo@email.it'
-        smtp_password = 'password'
+        smtp_user = 'marcodifeoo4@gmail.com'       # cambia con la tua email
+        smtp_password = 'Abcdefgh24!'          # cambia con la tua password o app password
 
         server = smtplib.SMTP(smtp_server, smtp_port)
         server.starttls()
