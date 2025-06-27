@@ -10,8 +10,6 @@ import mysql.connector
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 from werkzeug.middleware.proxy_fix import ProxyFix
-
-
 import os
 
 app = Flask(__name__)
