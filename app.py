@@ -11,6 +11,9 @@ from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 from werkzeug.middleware.proxy_fix import ProxyFix
 import os
+from flask import request, session, redirect, url_for, render_template, flash
+from werkzeug.security import check_password_hash
+from forms import LoginForm  # importa la tua classe LoginForm
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)  # Chiave segreta per sessioni e CSRF (meglio caricarla da variabile ambiente in produzione)
@@ -123,9 +126,7 @@ def prenotazione():
 
     return render_template('prenotazione.html', form=form)
 
-from flask import request, session, redirect, url_for, render_template, flash
-from werkzeug.security import check_password_hash
-from forms import LoginForm  # importa la tua classe LoginForm
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -348,6 +349,32 @@ def admin_prenotazioni():
     prenotazioni = prenotazioni.query.all()
     utenti = utenti.query.all()
     return render_template('admin.html', prenotazioni=prenotazioni, utenti=utenti)
+
+
+@app.route('/menu_ordine')
+def menu_ordine():
+    return render_template('menu_ordine.html')
+
+@app.route('/ordine', methods=['POST'])
+def ordine():
+    piatti = request.form.getlist('piatti')
+    ordine_dettaglio = []
+
+    for item in piatti:
+        nome, prezzo = item.split('|')
+        qty_field = f"quantita_{nome.replace(' ', '_')}"
+        quantita = int(request.form.get(qty_field, 1))
+        ordine_dettaglio.append({
+            'nome': nome,
+            'prezzo': float(prezzo),
+            'quantita': quantita,
+            'totale': round(quantita * float(prezzo), 2)
+        })
+
+    totale_finale = sum(p['totale'] for p in ordine_dettaglio)
+
+    return render_template('ordine_riepilogo.html', ordine=ordine_dettaglio, totale=totale_finale)
+
     
 if __name__ == "__main__":
     app.run(debug=True)
